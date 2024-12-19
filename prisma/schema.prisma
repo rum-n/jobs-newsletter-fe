@@ -3,15 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String       @id @default(cuid()) @map("_id")
+  email       String       @unique
+  name        String
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  preferences Preferences?
+}
+
+model Preferences {
+  id          String @id @default(cuid()) @map("_id")
+  userId      String @unique
+  preferences Json
+  User        User   @relation(fields: [userId], references: [id])
 }

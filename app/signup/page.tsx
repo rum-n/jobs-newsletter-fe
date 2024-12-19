@@ -1,7 +1,8 @@
 'use client'
 
+import React from 'react'
 import styled from 'styled-components'
-import SignupForm from './components/SignupForm'
+import SignupForm from '../components/SignupForm'
 
 const Main = styled.main``
 
@@ -45,15 +46,12 @@ const Subtitle = styled.p`
   }
 `
 
-export default function Home() {
+export default function SignupPage() {
   return (
     <Main>
       <HeroSection>
         <Container>
-          <Title>Find Your Dream Remote Job</Title>
-          <Subtitle>
-            Get personalized remote job opportunities delivered to your inbox daily.
-          </Subtitle>
+          <Title>Sign Up</Title>
           <SignupForm />
         </Container>
       </HeroSection>

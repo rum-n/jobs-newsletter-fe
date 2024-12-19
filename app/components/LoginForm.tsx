@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,6 +9,7 @@ import * as z from 'zod'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
+// Reuse the styled components from SignupForm
 const Form = styled.form`
   max-width: 400px;
   margin: 0 auto;
@@ -21,25 +23,16 @@ const InputGroup = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: ${({ theme }) => theme.spacing.lg};
   background-color: ${({ theme }) => theme.colors.input};
   color: ${({ theme }) => theme.colors.white};
   border: none;
   border-radius: 4px;
-  padding: ${({ theme }) => theme.spacing.lg};
 
   &:focus {
     outline: none;
     border-color: #0070f3;
   }
-`
-
-const ErrorMessage = styled.p`
-  color: #ff0000;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
 `
 
 const Button = styled.button`
@@ -54,7 +47,6 @@ const Button = styled.button`
   
   &:hover {
     opacity: 0.8;
-    transition: opacity 0.3s ease;
   }
   
   &:disabled {
@@ -63,14 +55,13 @@ const Button = styled.button`
   }
 `
 
-const Message = styled.p<{ isError?: boolean }>`
-  color: ${props => props.isError ? '#ff0000' : '#00c853'};
+const ErrorMessage = styled.p`
+  color: #ff0000;
   font-size: 0.875rem;
-  margin-top: 0.5rem;
-  text-align: center;
+  margin-top: 0.25rem;
 `
 
-const SignInText = styled.p`
+const SignUpText = styled.p`
   text-align: center;
   margin-top: 1rem;
   font-size: 0.875rem;
@@ -87,31 +78,29 @@ const SignInText = styled.p`
   }
 `
 
-const signupSchema = z.object({
+const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  name: z.string().min(2, 'Name must be at least 2 characters')
+  password: z.string().min(1, 'Password is required'),
+  rememberMe: z.boolean().optional()
 })
 
-type SignupData = z.infer<typeof signupSchema>
+type LoginData = z.infer<typeof loginSchema>
 
-export default function SignupForm() {
+export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
-  const [message, setMessage] = useState('')
-  const [isError, setIsError] = useState(false)
+  const [error, setError] = useState('')
   const router = useRouter()
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SignupData>({
-    resolver: zodResolver(signupSchema)
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({
+    resolver: zodResolver(loginSchema)
   })
 
-  const onSubmit = async (data: SignupData) => {
+  const onSubmit = async (data: LoginData) => {
     setIsLoading(true)
-    setMessage('')
-    setIsError(false)
+    setError('')
 
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -119,16 +108,12 @@ export default function SignupForm() {
 
       if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.error || 'Failed to create account')
+        throw new Error(error.message || 'Failed to login')
       }
 
-      setMessage('Account created successfully! Redirecting...')
-      setTimeout(() => {
-        router.push('/profile')
-      }, 2000)
+      router.push('/profile')
     } catch (error) {
-      setIsError(true)
-      setMessage(error instanceof Error ? error.message : 'Failed to create account')
+      setError(error instanceof Error ? error.message : 'Failed to login')
     } finally {
       setIsLoading(false)
     }
@@ -152,19 +137,16 @@ export default function SignupForm() {
           />
           {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
 
-          {message && <Message isError={isError}>{message}</Message>}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
-          <Button
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating account...' : 'Sign Up'}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
           </Button>
         </InputGroup>
       </Form>
-      <SignInText>
-        Already have an account? <Link href="/login">Sign in</Link>
-      </SignInText>
+      <SignUpText>
+        Don't have an account? <Link href="/signup">Sign up</Link>
+      </SignUpText>
     </>
   )
 }
