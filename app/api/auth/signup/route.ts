@@ -5,7 +5,7 @@ import { prisma } from '@/prisma/prisma'
 
 export async function POST(request: Request) {
   try {
-    const { email, password, name } = await request.json()
+    const { email, password } = await request.json()
 
     const hashedPassword = await hash(password, 12)
 
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       data: {
         email,
         password: hashedPassword,
-        name: name || '',
+        name: '',
       },
     })
 
