@@ -24,8 +24,7 @@ const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.input};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.text};
   border: none;
   border-radius: 4px;
   padding: ${({ theme }) => theme.spacing.lg};

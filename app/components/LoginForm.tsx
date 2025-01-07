@@ -24,8 +24,7 @@ const InputGroup = styled.div`
 const Input = styled.input`
   width: 100%;
   padding: ${({ theme }) => theme.spacing.lg};
-  background-color: ${({ theme }) => theme.colors.input};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.text};
   border: none;
   border-radius: 4px;
 
