@@ -53,3 +53,57 @@ export async function GET() {
     )
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const token = (await cookies()).get('auth-token')?.value
+
+    if (!token) {
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not defined')
+      return NextResponse.json(
+        { message: 'Server configuration error' },
+        { status: 500 }
+      )
+    }
+
+    try {
+      const decoded = verify(token, process.env.JWT_SECRET) as { userId: string }
+      const data = await request.json()
+
+      const user = await prisma.user.update({
+        where: { id: decoded.userId },
+        data: {
+          name: data.name,
+          preferences: {
+            upsert: {
+              create: { preferences: data.preferences || {} },
+              update: { preferences: data.preferences || {} }
+            }
+          }
+        },
+        include: { preferences: true }
+      })
+
+      const { password: _, ...userWithoutPassword } = user
+      return NextResponse.json(userWithoutPassword)
+    } catch (verifyError) {
+      console.error('JWT verification failed:', verifyError)
+      return NextResponse.json(
+        { message: 'Invalid token' },
+        { status: 401 }
+      )
+    }
+  } catch (error) {
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}

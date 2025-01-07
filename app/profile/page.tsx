@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/navigation'
+import EditProfileForm, { preferenceOptions } from '../components/EditProfileForm'
 
 interface UserData {
   id: string
@@ -21,7 +22,6 @@ const ProfileContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.input};
   border-radius: 10px;
   margin-top: 2rem;
-  min-height: 80vh;
 
   @media (max-width: 768px) {
     padding: 2rem 1rem;
@@ -46,7 +46,7 @@ const InfoItem = styled.div`
 `
 
 const EditButton = styled.button`
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1.5rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border: none;
@@ -64,10 +64,34 @@ const LoadingText = styled.p`
   font-size: 1.125rem;
 `
 
+const PreferenceChips = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  min-height: 50px;
+`
+
+const PreferenceChip = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 20px;
+  font-size: 0.8rem;
+`
+
 export default function ProfilePage() {
   const [user, setUser] = useState<UserData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
   const router = useRouter()
+
+  const getPreferenceLabel = (value: string) => {
+    return preferenceOptions.find((opt: { value: string }) => opt.value === value)?.label || value
+  }
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -112,18 +136,35 @@ export default function ProfilePage() {
 
   return (
     <ProfileContainer>
-      <Title>Your Profile</Title>
-      <ProfileInfo>
-        <InfoItem><strong>Name:</strong> {user.name || 'Not set'}</InfoItem>
-        <InfoItem><strong>Email:</strong> {user.email}</InfoItem>
-        <InfoItem>
-          <strong>Preferences:</strong>{' '}
-          {user.preferences
-            ? JSON.stringify(user.preferences.preferences, null, 2)
-            : 'No preferences set'}
-        </InfoItem>
-      </ProfileInfo>
-      <EditButton>Edit Profile</EditButton>
+      <Title>{isEditing ? 'Edit Profile' : 'Your Profile'}</Title>
+      {isEditing ? (
+        <EditProfileForm
+          initialData={user}
+          onCancel={() => setIsEditing(false)}
+        />
+      ) : (
+        <>
+          <ProfileInfo>
+            <InfoItem><strong>Name:</strong> {user.name || 'Not set'}</InfoItem>
+            <InfoItem><strong>Email:</strong> {user.email}</InfoItem>
+            <InfoItem>
+              <strong>Preferences:</strong>
+              {user.preferences && Object.keys(user.preferences.preferences).length > 0 ? (
+                <PreferenceChips>
+                  {Object.keys(user.preferences.preferences).map(pref => (
+                    <PreferenceChip key={pref}>
+                      {getPreferenceLabel(pref)}
+                    </PreferenceChip>
+                  ))}
+                </PreferenceChips>
+              ) : (
+                <span style={{ marginLeft: '0.5rem' }}>No preferences set</span>
+              )}
+            </InfoItem>
+          </ProfileInfo>
+          <EditButton onClick={() => setIsEditing(true)}>Edit Profile</EditButton>
+        </>
+      )}
     </ProfileContainer>
   )
-} 
+}
