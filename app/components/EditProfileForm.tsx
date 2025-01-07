@@ -11,6 +11,7 @@ const Form = styled.form`
   gap: 1rem;
   max-width: 500px;
   margin: 0 auto;
+  align-items: center;
 `
 
 const Input = styled.input`
@@ -19,6 +20,7 @@ const Input = styled.input`
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.text};
+  width: 60%;
 `
 
 const Button = styled.button`
@@ -81,7 +83,7 @@ const Select = styled.select`
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.text};
-  width: 100%;
+  width: 60%;
   margin-bottom: 0.5rem;
 `
 

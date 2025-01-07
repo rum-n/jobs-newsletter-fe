@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/navigation'
 import EditProfileForm, { preferenceOptions } from '../components/EditProfileForm'
+import Modal from '../components/Modal'
 
 interface UserData {
   id: string
@@ -34,20 +35,29 @@ const Title = styled.h2`
   color: ${({ theme }) => theme.colors.primary};
 `
 
-const ProfileInfo = styled.div`
-  margin-bottom: 2rem;
-  text-align: left;
-`
-
 const InfoItem = styled.div`
   margin-bottom: 1rem;
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: ${({ theme }) => theme.colors.text};
 `
 
 const EditButton = styled.button`
   padding: 0.7rem 1.5rem;
   background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
+`
+
+const Button = styled.button`
+  padding: 0.7rem 1.5rem;
+  background-color: ${({ theme }) => theme.colors.error};
   color: ${({ theme }) => theme.colors.white};
   border: none;
   border-radius: 4px;
@@ -77,10 +87,36 @@ const PreferenceChip = styled.div`
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 20px;
   font-size: 0.8rem;
+`
+
+const ProfileGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  text-align: left;
+  margin-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+`
+
+const ProfileSection = styled.div`
+  background: ${({ theme }) => theme.colors.white};
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`
+
+const SectionTitle = styled.h3`
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
 `
 
 export default function ProfilePage() {
@@ -88,6 +124,7 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
   const router = useRouter()
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const getPreferenceLabel = (value: string) => {
     return preferenceOptions.find((opt: { value: string }) => opt.value === value)?.label || value
@@ -118,6 +155,22 @@ export default function ProfilePage() {
     fetchUserData()
   }, [router])
 
+  const handleUnsubscribe = async () => {
+    try {
+      const response = await fetch('/api/user/delete', {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete account')
+      }
+
+      router.push('/') // Redirect to home page after successful deletion
+    } catch (error) {
+      console.error('Error deleting account:', error)
+    }
+  }
+
   if (isLoading) {
     return (
       <ProfileContainer>
@@ -144,11 +197,15 @@ export default function ProfilePage() {
         />
       ) : (
         <>
-          <ProfileInfo>
-            <InfoItem><strong>Name:</strong> {user.name || 'Not set'}</InfoItem>
-            <InfoItem><strong>Email:</strong> {user.email}</InfoItem>
-            <InfoItem>
-              <strong>Preferences:</strong>
+          <ProfileGrid>
+            <ProfileSection>
+              <SectionTitle>Personal Information</SectionTitle>
+              <InfoItem><strong>Name:</strong> {user.name || 'Not set'}</InfoItem>
+              <InfoItem><strong>Email:</strong> {user.email}</InfoItem>
+            </ProfileSection>
+
+            <ProfileSection>
+              <SectionTitle>Job Preferences</SectionTitle>
               {user.preferences && Object.keys(user.preferences.preferences).length > 0 ? (
                 <PreferenceChips>
                   {Object.keys(user.preferences.preferences).map(pref => (
@@ -158,13 +215,24 @@ export default function ProfilePage() {
                   ))}
                 </PreferenceChips>
               ) : (
-                <span style={{ marginLeft: '0.5rem' }}>No preferences set</span>
+                <span>No preferences set</span>
               )}
-            </InfoItem>
-          </ProfileInfo>
-          <EditButton onClick={() => setIsEditing(true)}>Edit Profile</EditButton>
+            </ProfileSection>
+          </ProfileGrid>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '5rem' }}>
+            <EditButton onClick={() => setIsEditing(true)}>Edit Profile</EditButton>
+            <Button onClick={() => setIsModalOpen(true)}>Unsubscribe</Button>
+          </div>
         </>
       )}
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleUnsubscribe}
+        title="Confirm Unsubscribe"
+        message="Are you sure you want to unsubscribe? This will permanently delete your account and all associated data."
+      />
     </ProfileContainer>
   )
 }
