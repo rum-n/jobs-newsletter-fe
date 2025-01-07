@@ -16,15 +16,19 @@ interface UserData {
 const ProfileContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2rem;
   text-align: center;
+  border: 1px solid ${({ theme }) => theme.colors.input};
+  border-radius: 10px;
+  margin-top: 2rem;
+  min-height: 80vh;
 
   @media (max-width: 768px) {
     padding: 2rem 1rem;
   }
 `
 
-const Title = styled.h1`
+const Title = styled.h2`
   font-weight: 800;
   margin-bottom: 2rem;
   color: ${({ theme }) => theme.colors.primary};
@@ -44,7 +48,7 @@ const InfoItem = styled.div`
 const EditButton = styled.button`
   padding: 0.5rem 1rem;
   background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
+  color: ${({ theme }) => theme.colors.white};
   border: none;
   border-radius: 4px;
   cursor: pointer;

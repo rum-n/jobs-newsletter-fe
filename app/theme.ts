@@ -1,11 +1,12 @@
 export const theme = {
     colors: {
-        primary: '#2BD17E',
-        secondary: '#2BD17E',
+        primary: '#6E7DAB',
+        secondary: '#32292F',
         error: '#EB5757',
-        background: '#093545',
-        input: '#224957',
-        card: '#092C39',
+        background: '#D1E3DD',
+        input: '#575366',
+        card: '#5762D5',
+        text: '#32292F',
         white: '#FFFFFF',
     },
     typography: {

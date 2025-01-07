@@ -11,7 +11,7 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
   body {
     font-family: var(--font-montserrat), sans-serif;
     background-color: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.text};
     /* padding: ${({ theme }) => theme.spacing['8xl']}; */
 
     @media (max-width: 768px) {
