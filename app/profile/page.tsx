@@ -227,7 +227,7 @@ export default function ProfilePage() {
       )}
 
       <Modal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleUnsubscribe}
         title="Confirm Unsubscribe"

@@ -54,15 +54,15 @@ const Button = styled.button<{ variant?: 'danger' }>`
 `
 
 interface ModalProps {
-  isOpen: boolean
+  open: boolean
   onClose: () => void
   onConfirm: () => void
   title: string
   message: string
 }
 
-export default function Modal({ isOpen, onClose, onConfirm, title, message }: ModalProps) {
-  if (!isOpen) return null
+export default function Modal({ open, onClose, onConfirm, title, message }: ModalProps) {
+  if (!open) return null
 
   return (
     <ModalOverlay onClick={onClose}>
