@@ -36,7 +36,7 @@ export async function GET() {
         )
       }
 
-      const { password: _, ...userWithoutPassword } = user
+      const { password, ...userWithoutPassword } = user
       return NextResponse.json(userWithoutPassword)
     } catch (verifyError) {
       console.error('JWT verification failed:', verifyError)
@@ -47,7 +47,7 @@ export async function GET() {
     }
   } catch (error) {
     return NextResponse.json(
-      { message: 'Internal server error' },
+      { message: 'Internal server error', details: error },
       { status: 500 }
     )
   }
@@ -84,7 +84,7 @@ export async function PUT(request: Request) {
         }
       })
 
-      const { password: _, ...userWithoutPassword } = user
+      const { password, ...userWithoutPassword } = user
       return NextResponse.json(userWithoutPassword)
     } catch (verifyError) {
       console.error('JWT verification failed:', verifyError)
@@ -95,7 +95,7 @@ export async function PUT(request: Request) {
     }
   } catch (error) {
     return NextResponse.json(
-      { message: 'Internal server error' },
+      { message: 'Internal server error', details: error },
       { status: 500 }
     )
   }

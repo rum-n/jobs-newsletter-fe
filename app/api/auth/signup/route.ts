@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       },
     })
 
-    const { password: _, ...result } = user
+    const { ...result } = user
 
     return NextResponse.json(result)
   } catch (error) {
