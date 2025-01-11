@@ -105,9 +105,7 @@ export const preferenceOptions = [
 interface EditProfileFormProps {
   initialData: {
     name: string
-    preferences?: {
-      preferences: Record<string, any>
-    }
+    keywords?: string[]
   }
   onCancel: () => void
 }
@@ -115,7 +113,7 @@ interface EditProfileFormProps {
 export default function EditProfileForm({ initialData, onCancel }: EditProfileFormProps) {
   const [name, setName] = useState(initialData.name)
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>(
-    Object.keys(initialData.preferences?.preferences || {})
+    initialData.keywords || []
   )
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)

@@ -10,9 +10,7 @@ interface UserData {
   id: string
   email: string
   name: string
-  preferences?: {
-    preferences: Record<string, any>
-  }
+  keywords?: string[]
 }
 
 const ProfileContainer = styled.div`
@@ -206,9 +204,9 @@ export default function ProfilePage() {
 
             <ProfileSection>
               <SectionTitle>Job Preferences</SectionTitle>
-              {user.preferences && Object.keys(user.preferences.preferences).length > 0 ? (
+              {user.keywords && user.keywords.length > 0 ? (
                 <PreferenceChips>
-                  {Object.keys(user.preferences.preferences).map(pref => (
+                  {user.keywords.map(pref => (
                     <PreferenceChip key={pref}>
                       {getPreferenceLabel(pref)}
                     </PreferenceChip>

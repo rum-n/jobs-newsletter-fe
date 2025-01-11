@@ -8,18 +8,11 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(cuid()) @map("_id")
-  email       String       @unique
-  name        String
-  password    String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  preferences Preferences?
-}
-
-model Preferences {
-  id          String @id @default(cuid()) @map("_id")
-  userId      String @unique
-  preferences Json
-  User        User   @relation(fields: [userId], references: [id])
+  id        String   @id @default(cuid()) @map("_id")
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  keywords  String[]
 }

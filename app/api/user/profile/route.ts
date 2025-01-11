@@ -27,7 +27,6 @@ export async function GET() {
 
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
-        include: { preferences: true }
       })
 
       if (!user) {
@@ -81,14 +80,8 @@ export async function PUT(request: Request) {
         where: { id: decoded.userId },
         data: {
           name: data.name,
-          preferences: {
-            upsert: {
-              create: { preferences: data.preferences || {} },
-              update: { preferences: data.preferences || {} }
-            }
-          }
-        },
-        include: { preferences: true }
+          keywords: data.keywords || []
+        }
       })
 
       const { password: _, ...userWithoutPassword } = user
