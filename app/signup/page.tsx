@@ -33,19 +33,6 @@ const Title = styled.h1`
   }
 `
 
-const Subtitle = styled.p`
-  font-size: 1.5rem;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-  
-  @media (max-width: 768px) {
-    font-size: 1.25rem;
-  }
-`
-
 export default function SignupPage() {
   return (
     <Main>

@@ -144,7 +144,7 @@ export default function LoginForm() {
         </InputGroup>
       </Form>
       <SignUpText>
-        Don't have an account? <Link href="/signup">Sign up</Link>
+        No account yet? <Link href="/signup">Sign up</Link>
       </SignUpText>
     </>
   )

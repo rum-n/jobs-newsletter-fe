@@ -87,14 +87,14 @@ const SocialProof = styled.div`
 
 `
 
-const JobPreviewSection = styled.section`
-  background: rgba(255, 255, 255, 0.02);
-  padding: 4rem 2rem;
-  
-  @media (max-width: 768px) {
-    padding: 2rem 1rem;
-  }
-`
+// const JobPreviewSection = styled.section`
+//   background: rgba(255, 255, 255, 0.02);
+//   padding: 4rem 2rem;
+
+//   @media (max-width: 768px) {
+//     padding: 2rem 1rem;
+//   }
+// `
 
 const SectionTitle = styled.h2`
   font-size: 2rem;
@@ -102,37 +102,37 @@ const SectionTitle = styled.h2`
   color: ${({ theme }) => theme.colors.primary};
 `
 
-const JobsList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`
+// const JobsList = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   gap: 1.5rem;
+//   margin-bottom: 2rem;
 
-const JobCard = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 8px;
-  
-  h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .company {
-    color: ${({ theme }) => theme.colors.primary};
-    margin-bottom: 0.5rem;
-  }
-  
-  .salary {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-`
+//   @media (max-width: 768px) {
+//     grid-template-columns: 1fr;
+//   }
+// `
+
+// const JobCard = styled.div`
+//   background: rgba(255, 255, 255, 0.05);
+//   padding: 1.5rem;
+//   border-radius: 8px;
+
+//   h3 {
+//     font-size: 1.25rem;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   .company {
+//     color: ${({ theme }) => theme.colors.primary};
+//     margin-bottom: 0.5rem;
+//   }
+
+//   .salary {
+//     font-weight: 600;
+//     margin-bottom: 0.5rem;
+//   }
+// `
 
 const FAQSection = styled.section`
   padding: 0rem 2rem 4rem 2rem;

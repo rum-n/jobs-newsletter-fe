@@ -159,7 +159,7 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
       setMessage('Profile updated successfully')
       router.refresh()
       setTimeout(onCancel, 1500)
-    } catch (error) {
+    } catch {
       setMessage('Failed to update profile')
       setIsError(true)
     }
