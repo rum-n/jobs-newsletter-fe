@@ -17,9 +17,7 @@ export async function POST(request: Request) {
       },
     })
 
-    const { ...result } = user
-
-    return NextResponse.json(result)
+    return NextResponse.json(user)
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to create user', details: error },

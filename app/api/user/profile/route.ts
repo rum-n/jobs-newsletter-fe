@@ -36,8 +36,7 @@ export async function GET() {
         )
       }
 
-      const { password, ...userWithoutPassword } = user
-      return NextResponse.json(userWithoutPassword)
+      return NextResponse.json(user)
     } catch (verifyError) {
       console.error('JWT verification failed:', verifyError)
       return NextResponse.json(
@@ -84,8 +83,7 @@ export async function PUT(request: Request) {
         }
       })
 
-      const { password, ...userWithoutPassword } = user
-      return NextResponse.json(userWithoutPassword)
+      return NextResponse.json(user)
     } catch (verifyError) {
       console.error('JWT verification failed:', verifyError)
       return NextResponse.json(
