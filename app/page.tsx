@@ -87,52 +87,11 @@ const SocialProof = styled.div`
 
 `
 
-// const JobPreviewSection = styled.section`
-//   background: rgba(255, 255, 255, 0.02);
-//   padding: 4rem 2rem;
-
-//   @media (max-width: 768px) {
-//     padding: 2rem 1rem;
-//   }
-// `
-
 const SectionTitle = styled.h2`
   font-size: 2rem;
   margin-bottom: 2rem;
   color: ${({ theme }) => theme.colors.primary};
 `
-
-// const JobsList = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(2, 1fr);
-//   gap: 1.5rem;
-//   margin-bottom: 2rem;
-
-//   @media (max-width: 768px) {
-//     grid-template-columns: 1fr;
-//   }
-// `
-
-// const JobCard = styled.div`
-//   background: rgba(255, 255, 255, 0.05);
-//   padding: 1.5rem;
-//   border-radius: 8px;
-
-//   h3 {
-//     font-size: 1.25rem;
-//     margin-bottom: 0.5rem;
-//   }
-
-//   .company {
-//     color: ${({ theme }) => theme.colors.primary};
-//     margin-bottom: 0.5rem;
-//   }
-
-//   .salary {
-//     font-weight: 600;
-//     margin-bottom: 0.5rem;
-//   }
-// `
 
 const FAQSection = styled.section`
   padding: 0rem 2rem 4rem 2rem;
@@ -153,9 +112,6 @@ const FAQItem = styled.div`
   padding: 1rem 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.input};
   padding: 1rem;
-  /* background: ${({ theme }) => theme.colors.white}; */
-  /* border-radius: 12px; */
-  /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); */
 
   button {
     width: 100%;
@@ -352,26 +308,7 @@ export default function Home() {
         </Container>
       </HeroSection>
 
-      {/* <JobPreviewSection>
-        <Container>
-          <SectionTitle>Recent Remote Opportunities</SectionTitle>
-          <JobsList>
-            <JobCard>
-              <h3>Senior Frontend Engineer</h3>
-              <div className="company">Stripe</div>
-              <div className="salary">$150k - $220k</div>
-              <p>Build the future of payments with React, TypeScript, and GraphQL.</p>
-            </JobCard>
-            <JobCard>
-              <h3>Full Stack Developer</h3>
-              <div className="company">Shopify</div>
-              <div className="salary">$130k - $180k</div>
-              <p>Join our remote-first team working on e-commerce solutions.</p>
-            </JobCard>
-          </JobsList>
-          <p>Subscribe to see more opportunities like these in your inbox daily!</p>
-        </Container>
-      </JobPreviewSection> */}
+      {/* TODO: Add job preview section */}
 
       <FAQSection>
         <Container>
