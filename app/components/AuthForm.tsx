@@ -23,12 +23,10 @@ export default function AuthForm({ initialMode = 'signup', onSuccess }: AuthForm
       {isLogin ? (
         <LoginForm
           onToggleForm={() => setIsLogin(false)}
-          onSuccess={onSuccess}
         />
       ) : (
         <SignupForm
           onToggleForm={() => setIsLogin(true)}
-          onSuccess={onSuccess}
         />
       )}
     </Container>
