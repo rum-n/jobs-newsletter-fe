@@ -12,10 +12,9 @@ const Container = styled.div`
 
 interface AuthFormProps {
   initialMode?: 'login' | 'signup'
-  onSuccess?: () => void
 }
 
-export default function AuthForm({ initialMode = 'signup', onSuccess }: AuthFormProps) {
+export default function AuthForm({ initialMode = 'signup' }: AuthFormProps) {
   const [isLogin, setIsLogin] = useState(initialMode === 'login')
 
   return (
