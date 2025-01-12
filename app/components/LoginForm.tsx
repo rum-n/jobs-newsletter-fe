@@ -89,11 +89,10 @@ const loginSchema = z.object({
 type LoginData = z.infer<typeof loginSchema>
 
 interface LoginFormProps {
-  onToggleForm: () => void
-  onSuccess?: () => void
+  onToggleForm?: () => void
 }
 
-export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
+export default function LoginForm({ onToggleForm }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -119,7 +118,6 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
       }
 
       router.push('/profile')
-      onSuccess?.()
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to login')
     } finally {

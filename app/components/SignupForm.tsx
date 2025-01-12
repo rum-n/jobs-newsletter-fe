@@ -97,11 +97,10 @@ const signupSchema = z.object({
 type SignupData = z.infer<typeof signupSchema>
 
 interface SignupFormProps {
-  onToggleForm: () => void
-  onSuccess?: () => void
+  onToggleForm?: () => void
 }
 
-export default function SignupForm({ onToggleForm, onSuccess }: SignupFormProps) {
+export default function SignupForm({ onToggleForm }: SignupFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
@@ -131,7 +130,6 @@ export default function SignupForm({ onToggleForm, onSuccess }: SignupFormProps)
       setMessage('Account created successfully! Redirecting...')
       setTimeout(() => {
         router.push('/profile')
-        onSuccess?.()
       }, 2000)
     } catch (error) {
       setIsError(true)
