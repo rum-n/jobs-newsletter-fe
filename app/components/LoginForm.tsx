@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Footer from './Footer'
 
 // Reuse the styled components from SignupForm
 const Form = styled.form`
@@ -66,10 +67,14 @@ const SignUpText = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.text};
 
-  a {
+  button {
     color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
     font-weight: 500;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     
     &:hover {
       text-decoration: underline;
@@ -85,7 +90,12 @@ const loginSchema = z.object({
 
 type LoginData = z.infer<typeof loginSchema>
 
-export default function LoginForm() {
+interface LoginFormProps {
+  onToggleForm: () => void
+  onSuccess?: () => void
+}
+
+export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -111,6 +121,7 @@ export default function LoginForm() {
       }
 
       router.push('/profile')
+      onSuccess?.()
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to login')
     } finally {
@@ -144,7 +155,7 @@ export default function LoginForm() {
         </InputGroup>
       </Form>
       <SignUpText>
-        No account yet? <Link href="/signup">Sign up</Link>
+        No account yet? <button onClick={onToggleForm}>Sign up</button>
       </SignUpText>
     </>
   )

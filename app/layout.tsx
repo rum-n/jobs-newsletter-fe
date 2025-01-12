@@ -4,6 +4,7 @@ import StyledComponentsRegistry from './lib/registry'
 import { Montserrat } from 'next/font/google'
 import { Providers } from "./providers";
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -24,6 +25,7 @@ export default function RootLayout({
           <Providers>
             <Header />
             {children}
+            <Footer />
           </Providers>
         </StyledComponentsRegistry>
       </body>

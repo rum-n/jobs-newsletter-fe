@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -8,7 +10,7 @@ const HeaderContainer = styled.header`
   right: 0;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px);
-  z-index: 1000;
+  z-index: 100;
   padding: 1rem 2rem;
   
   @media (max-width: 768px) {
@@ -16,7 +18,7 @@ const HeaderContainer = styled.header`
   }
 `
 
-const Nav = styled.nav`
+const Nav = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -61,15 +63,19 @@ const Button = styled(Link)`
 `
 
 export default function Header() {
+
   return (
     <HeaderContainer>
       <Nav>
-        <Logo href="/">Remote Jobs</Logo>
+        <Logo href="/">Daily Observable</Logo>
         <NavLinks>
-          {/* <NavLink href="/about">About</NavLink> */}
-          <NavLink href="/blog">For Employers</NavLink>
-          <NavLink href="/login">Login</NavLink>
-          <Button href="/signup">Sign Up</Button>
+          <NavLink href="/employers">For Employers</NavLink>
+          <NavLink href="/login">
+            Login
+          </NavLink>
+          <Button href="/signup">
+            Sign Up
+          </Button>
         </NavLinks>
       </Nav>
     </HeaderContainer>

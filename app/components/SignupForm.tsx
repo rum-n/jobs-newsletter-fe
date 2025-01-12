@@ -75,10 +75,14 @@ const SignInText = styled.p`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.text};
 
-  a {
+  button {
     color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
     font-weight: 500;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     
     &:hover {
       text-decoration: underline;
@@ -93,7 +97,12 @@ const signupSchema = z.object({
 
 type SignupData = z.infer<typeof signupSchema>
 
-export default function SignupForm() {
+interface SignupFormProps {
+  onToggleForm: () => void
+  onSuccess?: () => void
+}
+
+export default function SignupForm({ onToggleForm, onSuccess }: SignupFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
@@ -123,6 +132,7 @@ export default function SignupForm() {
       setMessage('Account created successfully! Redirecting...')
       setTimeout(() => {
         router.push('/profile')
+        onSuccess?.()
       }, 2000)
     } catch (error) {
       setIsError(true)
@@ -161,7 +171,7 @@ export default function SignupForm() {
         </InputGroup>
       </Form>
       <SignInText>
-        Already have an account? <Link href="/login">Sign in</Link>
+        Already have an account? <button onClick={onToggleForm}>Sign in</button>
       </SignInText>
     </>
   )
