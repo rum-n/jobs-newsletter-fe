@@ -3,9 +3,7 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { ChevronDownIcon } from './components/ChevronDownIcon'
-import Link from 'next/link'
 import AuthForm from './components/AuthForm'
-import Footer from './components/Footer'
 
 const Main = styled.main``
 

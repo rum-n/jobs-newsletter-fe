@@ -7,8 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import Footer from './Footer'
 
 // Reuse the styled components from SignupForm
 const Form = styled.form`

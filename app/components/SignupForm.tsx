@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 
 const Form = styled.form`
   max-width: 400px;
