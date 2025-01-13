@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
+import PasswordWrapper from './PasswordWrapper'
 
 // Reuse the styled components from SignupForm
 const Form = styled.form`
@@ -136,11 +137,7 @@ export default function LoginForm({ onToggleForm }: LoginFormProps) {
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
-          <Input
-            {...register('password')}
-            type="password"
-            placeholder="Password"
-          />
+          <PasswordWrapper register={register} />
           {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
 
           {error && <ErrorMessage>{error}</ErrorMessage>}

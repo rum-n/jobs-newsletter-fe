@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
+import PasswordWrapper from './PasswordWrapper'
 
 const Form = styled.form`
   max-width: 400px;
@@ -150,11 +151,7 @@ export default function SignupForm({ onToggleForm }: SignupFormProps) {
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
 
-          <Input
-            {...register('password')}
-            type="password"
-            placeholder="Password"
-          />
+          <PasswordWrapper register={register} />
           {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
 
           {message && <Message isError={isError}>{message}</Message>}
