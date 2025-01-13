@@ -6,13 +6,9 @@ const FooterContainer = styled.footer`
   flex-direction: column;
   align-items: center;
   background: rgba(255, 255, 255, 0.05);
-  padding: 4rem 2rem;
-  margin-top: 2rem;
+
+  margin: 2rem 0;
   width: 100%;
-  
-  @media (max-width: 768px) {
-    padding: 2rem 1rem;
-  }
 `
 
 const FooterContent = styled.div`
