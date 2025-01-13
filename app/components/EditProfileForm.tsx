@@ -77,31 +77,6 @@ const ChipDelete = styled.button`
   }
 `
 
-const Select = styled.select`
-  padding: 0.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.input};
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) => theme.colors.text};
-  width: 60%;
-  margin-bottom: 0.5rem;
-`
-
-export const preferenceOptions = [
-  { value: 'frontend', label: 'Frontend' },
-  { value: 'backend', label: 'Backend' },
-  { value: 'fullstack', label: 'Full Stack' },
-  { value: 'devops', label: 'DevOps' },
-  { value: 'cloud', label: 'Cloud' },
-  { value: 'security', label: 'Security' },
-  { value: 'sre', label: 'SRE' },
-  { value: 'machine-learning', label: 'Machine Learning' },
-  { value: 'data-analyst', label: 'Data Analyst' },
-  { value: 'data-scientist', label: 'Data Scientist' },
-  { value: 'data-engineer', label: 'Data Engineer' },
-  { value: 'data-architect', label: 'Data Architect' },
-] as const
-
 interface EditProfileFormProps {
   initialData: {
     name: string
@@ -115,16 +90,20 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>(
     initialData.keywords || []
   )
+  const [newKeyword, setNewKeyword] = useState('')
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
   const router = useRouter()
 
-  const handleAddPreference = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value
-    if (value && !selectedPreferences.includes(value)) {
-      setSelectedPreferences([...selectedPreferences, value])
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      const value = newKeyword.trim()
+      if (value && !selectedPreferences.includes(value)) {
+        setSelectedPreferences([...selectedPreferences, value])
+        setNewKeyword('')
+      }
     }
-    e.target.value = '' // Reset select after selection
   }
 
   const handleRemovePreference = (preference: string) => {
@@ -137,18 +116,15 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
     setIsError(false)
 
     try {
-      // Convert preferences array to object
-      const preferencesObject = selectedPreferences.reduce((acc, pref) => {
-        acc[pref] = true
-        return acc
-      }, {} as Record<string, boolean>)
-
       const response = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
-          preferences: preferencesObject
+          preferences: selectedPreferences.reduce((acc, pref) => {
+            acc[pref] = true
+            return acc
+          }, {} as Record<string, boolean>)
         })
       })
 
@@ -174,26 +150,18 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
         placeholder="Name"
       />
 
-      <Select
-        onChange={handleAddPreference}
-        defaultValue=""
-      >
-        <option value="" disabled>Add job categories</option>
-        {preferenceOptions.map(option => (
-          <option
-            key={option.value}
-            value={option.value}
-            disabled={selectedPreferences.includes(option.value)}
-          >
-            {option.label}
-          </option>
-        ))}
-      </Select>
+      <Input
+        type="text"
+        value={newKeyword}
+        onChange={(e) => setNewKeyword(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Add keyword and press Enter"
+      />
 
       <ChipsContainer>
         {selectedPreferences.map(preference => (
           <Chip key={preference}>
-            {preferenceOptions.find(opt => opt.value === preference)?.label || preference}
+            {preference}
             <ChipDelete
               type="button"
               onClick={() => handleRemovePreference(preference)}

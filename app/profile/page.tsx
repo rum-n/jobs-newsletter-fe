@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/navigation'
-import EditProfileForm, { preferenceOptions } from '../components/EditProfileForm'
+import EditProfileForm from '../components/EditProfileForm'
 import Modal from '../components/Modal'
 
 interface UserData {
@@ -20,7 +20,7 @@ const ProfileContainer = styled.div`
   text-align: center;
   border: 1px solid ${({ theme }) => theme.colors.input};
   border-radius: 10px;
-  margin-top: 2rem;
+  margin-top: 7rem;
 
   @media (max-width: 768px) {
     padding: 2rem 1rem;
@@ -124,10 +124,6 @@ export default function ProfilePage() {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const getPreferenceLabel = (value: string) => {
-    return preferenceOptions.find((opt: { value: string }) => opt.value === value)?.label || value
-  }
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -208,7 +204,7 @@ export default function ProfilePage() {
                 <PreferenceChips>
                   {user.keywords.map(pref => (
                     <PreferenceChip key={pref}>
-                      {getPreferenceLabel(pref)}
+                      {pref}
                     </PreferenceChip>
                   ))}
                 </PreferenceChips>

@@ -20,9 +20,10 @@ const FooterContent = styled.div`
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10rem;
+  gap: 5rem;
   
   @media (max-width: 768px) {
+    gap: 2rem;
     grid-template-columns: 1fr;
     text-align: center;
   }
