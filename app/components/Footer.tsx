@@ -72,7 +72,7 @@ export default function Footer() {
     <FooterContainer>
       <FooterContent>
         <FooterColumn>
-          <h4>Project</h4>
+          <h4>Company</h4>
           <ul>
             <li><Link href="/about">About</Link></li>
             <li><Link href="/privacy">Privacy Policy</Link></li>
@@ -92,7 +92,6 @@ export default function Footer() {
             <ul>
               <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a></li>
               <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-              <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a></li>
               <li><a href="mailto:contact@example.com">Email Us</a></li>
             </ul>
           </FooterColumn> */}

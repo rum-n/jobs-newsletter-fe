@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import styled from 'styled-components'
+import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -49,13 +51,15 @@ const NavLink = styled(Link)`
   }
 `
 
-const Button = styled(Link)`
+const Button = styled.button`
   padding: 0.5rem 1rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
+  border: none;
   border-radius: 4px;
   text-decoration: none;
   transition: opacity 0.3s ease;
+  cursor: pointer;
   
   &:hover {
     opacity: 0.8;
@@ -63,6 +67,40 @@ const Button = styled(Link)`
 `
 
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is logged in by making a request to the profile endpoint
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch('/api/user/profile')
+        setIsLoggedIn(response.ok)
+      } catch (error) {
+        setIsLoggedIn(false)
+      }
+    }
+
+    checkAuthStatus()
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST'
+      })
+
+      if (response.ok) {
+        setIsLoggedIn(false)
+        // Clear any cached data
+        await fetch('/api/user/profile', { method: 'HEAD' })
+        router.push('/')
+        router.refresh()
+      }
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
 
   return (
     <HeaderContainer>
@@ -70,12 +108,17 @@ export default function Header() {
         <Logo href="/">Daily Observable</Logo>
         <NavLinks>
           <NavLink href="/employers">For Employers</NavLink>
-          <NavLink href="/login">
-            Login
-          </NavLink>
-          <Button href="/signup">
-            Sign Up
-          </Button>
+          {isLoggedIn ? (
+            <>
+              {/* <NavLink href="/profile">Profile</NavLink> */}
+              <Button onClick={handleLogout}>Logout</Button>
+            </>
+          ) : (
+            <>
+              <NavLink href="/login">Login</NavLink>
+              <Button as={Link} href="/signup">Sign Up</Button>
+            </>
+          )}
         </NavLinks>
       </Nav>
     </HeaderContainer>
