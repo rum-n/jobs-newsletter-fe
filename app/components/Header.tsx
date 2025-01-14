@@ -13,7 +13,7 @@ const HeaderContainer = styled.header`
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px);
   z-index: 100;
-  padding: 1rem 2rem;
+  padding: 0.7 2rem;
   
   @media (max-width: 768px) {
     padding: 1rem;
@@ -29,10 +29,17 @@ const Nav = styled.div`
 `
 
 const Logo = styled(Link)`
+  display: flex;
+  align-items: center;
   font-weight: 800;
   font-size: 1.5rem;
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
+
+  img {
+    height: 80px;
+    margin: 0.5rem 1rem;
+  }
 `
 
 const NavLinks = styled.div`
@@ -106,7 +113,10 @@ export default function Header() {
   return (
     <HeaderContainer>
       <Nav>
-        <Logo href="/">Daily Observable</Logo>
+        <Logo href="/">
+          <img src="/meerkat.png" alt="Daily Observable Logo" />
+          Daily Observable
+        </Logo>
         <NavLinks>
           <NavLink href="/employers">For Employers</NavLink>
           {isLoggedIn ? (

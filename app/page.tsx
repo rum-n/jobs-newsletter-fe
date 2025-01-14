@@ -13,7 +13,9 @@ const HeroSection = styled.section`
   margin-bottom: 4rem;
   
   @media (max-width: 768px) {
-    padding: 4rem 1rem;
+    padding: 0 1rem;
+    margin-top: 2rem;
+    margin-bottom: 0rem;
   }
 `
 
@@ -33,6 +35,7 @@ const Title = styled.h1`
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
+    line-height: 1.2;
   }
 `
 
