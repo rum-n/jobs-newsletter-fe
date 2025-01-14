@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
+import { FieldValues, UseFormRegister } from 'react-hook-form'
 import styled from 'styled-components'
 
 const PasswordContainer = styled.div`
@@ -63,7 +63,7 @@ const EyeOffIcon = () => (
 )
 
 interface PasswordWrapperProps {
-  register: UseFormRegister<any>
+  register: UseFormRegister<{ email: string; password: string }>;
 }
 
 export default function PasswordWrapper({ register }: PasswordWrapperProps) {

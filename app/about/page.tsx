@@ -44,7 +44,7 @@ export default function AboutPage() {
       <Section>
         <h2>Get in Touch</h2>
         <p>
-          Have questions or suggestions? We'd love to hear from you. Reach out to us at{' '}
+          Have questions or suggestions? We&apos;d love to hear from you. Reach out at{' '}
           <Link href="mailto:jobs@dailyobservable.com" style={{ color: 'inherit' }}>
             jobs@dailyobservable.com
           </Link>

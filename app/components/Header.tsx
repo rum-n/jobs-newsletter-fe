@@ -78,6 +78,7 @@ export default function Header() {
         setIsLoggedIn(response.ok)
       } catch (error) {
         setIsLoggedIn(false)
+        console.error('Error checking auth status:', error)
       }
     }
 
