@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
 import PasswordWrapper from './PasswordWrapper'
+// import Link from 'next/link'
+// import { theme } from '../theme'
 
 // Reuse the styled components from SignupForm
 const Form = styled.form`
@@ -139,7 +141,9 @@ export default function LoginForm({ onToggleForm }: LoginFormProps) {
 
           <PasswordWrapper register={register} />
           {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
-
+          {/* <Link href="/forgot-password" style={{ textAlign: 'right', fontSize: '0.875rem', color: theme.colors.primary }}>
+            Forgot password?
+          </Link> */}
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <Button type="submit" disabled={isLoading}>
