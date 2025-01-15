@@ -23,10 +23,20 @@ export async function GET() {
     }
 
     try {
-      const decoded = verify(token, process.env.JWT_SECRET) as { userId: string }
+      const decoded = verify(token, process.env.JWT_SECRET) as {
+        userId: string
+        email: string
+        iat: number
+      }
 
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          keywords: true
+        }
       })
 
       if (!user) {
@@ -45,8 +55,9 @@ export async function GET() {
       )
     }
   } catch (error) {
+    console.error('Profile error:', error)
     return NextResponse.json(
-      { message: 'Internal server error', details: error },
+      { message: 'Internal server error', error: String(error) },
       { status: 500 }
     )
   }
@@ -72,14 +83,25 @@ export async function PUT(request: Request) {
     }
 
     try {
-      const decoded = verify(token, process.env.JWT_SECRET) as { userId: string }
+      const decoded = verify(token, process.env.JWT_SECRET) as {
+        userId: string
+        email: string
+        iat: number
+      }
+
       const data = await request.json()
 
       const user = await prisma.user.update({
         where: { id: decoded.userId },
         data: {
           name: data.name,
-          keywords: data.keywords || []
+          keywords: Array.isArray(data.keywords) ? data.keywords : []
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          keywords: true
         }
       })
 
@@ -92,8 +114,9 @@ export async function PUT(request: Request) {
       )
     }
   } catch (error) {
+    console.error('Profile update error:', error)
     return NextResponse.json(
-      { message: 'Internal server error', details: error },
+      { message: 'Internal server error', error: String(error) },
       { status: 500 }
     )
   }

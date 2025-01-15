@@ -115,13 +115,19 @@ export default function LoginForm({ onToggleForm }: LoginFormProps) {
         body: JSON.stringify(data)
       })
 
+      const responseData = await response.json().catch(() => null)
+
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Failed to login')
+        throw new Error(responseData?.message || 'Failed to login')
+      }
+
+      if (!responseData) {
+        throw new Error('Empty response from server')
       }
 
       router.push('/profile')
     } catch (error) {
+      console.error('Login error:', error)
       setError(error instanceof Error ? error.message : 'Failed to login')
     } finally {
       setIsLoading(false)

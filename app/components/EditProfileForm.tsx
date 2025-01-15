@@ -77,6 +77,16 @@ const ChipDelete = styled.button`
   }
 `
 
+const Hint = styled.p`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.text};
+  margin-top: 0.5rem;
+  text-align: left;
+  width: 60%;
+  margin-top: -0.7rem;
+  line-height: 1.5;
+`
+
 interface EditProfileFormProps {
   initialData: {
     name: string
@@ -121,10 +131,7 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
-          preferences: selectedPreferences.reduce((acc, pref) => {
-            acc[pref] = true
-            return acc
-          }, {} as Record<string, boolean>)
+          keywords: selectedPreferences
         })
       })
 
@@ -132,9 +139,11 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
         throw new Error('Failed to update profile')
       }
 
+      const updatedUser = await response.json()
       setMessage('Profile updated successfully')
-      router.refresh()
-      setTimeout(onCancel, 1500)
+
+      // Force a server request to get fresh data
+      window.location.reload()
     } catch {
       setMessage('Failed to update profile')
       setIsError(true)
@@ -157,6 +166,7 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
         onKeyDown={handleKeyDown}
         placeholder="Add keyword and press Enter"
       />
+      <Hint>Hint: Add keywords to get more relevant jobs, e.g. "frontend developer", "fullstack", "Rust"</Hint>
 
       <ChipsContainer>
         {selectedPreferences.map(preference => (
