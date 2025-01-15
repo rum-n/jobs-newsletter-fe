@@ -4,6 +4,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 const HeaderContainer = styled.header`
   position: fixed;
@@ -42,10 +43,35 @@ const Logo = styled(Link)`
   }
 `
 
-const NavLinks = styled.div`
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  
+  @media (max-width: 768px) {
+    display: block;
+  }
+`
+
+const NavLinks = styled.div<{ isOpen: boolean }>`
   display: flex;
   gap: 2rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    gap: 1rem;
+  }
 `
 
 const NavLink = styled(Link)`
@@ -75,6 +101,7 @@ const Button = styled.button`
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -114,14 +141,17 @@ export default function Header() {
     <HeaderContainer>
       <Nav>
         <Logo href="/">
-          <img src="/meerkat.png" alt="Daily Observable Logo" />
+          <Image src="/meerkat.png" alt="Daily Observable Logo" width={50} height={80} />
           Daily Observable
         </Logo>
-        <NavLinks>
+        <MobileMenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <div style={{ fontSize: '2rem' }}>✕</div> : <div style={{ fontSize: '2rem' }}>☰</div>}
+        </MobileMenuButton>
+        <NavLinks isOpen={isMenuOpen}>
           <NavLink href="/employers">For Employers</NavLink>
           {isLoggedIn ? (
             <>
-              {/* <NavLink href="/profile">Profile</NavLink> */}
+              <NavLink href="/profile">Profile</NavLink>
               <Button onClick={handleLogout}>Logout</Button>
             </>
           ) : (

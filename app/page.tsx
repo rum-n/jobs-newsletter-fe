@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { ChevronDownIcon } from './components/ChevronDownIcon'
 import AuthForm from './components/AuthForm'
+import { theme } from './theme'
 
 const Main = styled.main``
 
@@ -224,8 +225,24 @@ export default function Home() {
           </Subtitle>
           <AuthForm />
           <SocialProof>
-            Trusted by software developers, designers, and tech professionals
+            Trusted by thousands of <span style={{
+              backgroundColor: 'rgba(18, 38, 58, 0.1)',
+              padding: '0 4px',
+              borderRadius: '4px',
+            }}>software developers</span>, <span style={{
+              backgroundColor: 'rgba(81, 28, 41, 0.1)',
+              padding: '0 4px',
+              borderRadius: '4px',
+            }}>designers</span>, and <span style={{
+              backgroundColor: 'rgba(87, 98, 213, 0.1)',
+              padding: '0 4px',
+              borderRadius: '4px',
+            }}>tech professionals</span>
           </SocialProof>
+
+          <Subtitle>
+            We search on <b>20+ job boards</b> and send you the best opportunities so you don't have to.
+          </Subtitle>
           <FeaturesGrid>
             <FeatureCard>
               <h3>Curated Opportunities</h3>
