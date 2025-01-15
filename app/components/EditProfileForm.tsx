@@ -103,7 +103,6 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
   const [newKeyword, setNewKeyword] = useState('')
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
-  const router = useRouter()
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -139,7 +138,6 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
         throw new Error('Failed to update profile')
       }
 
-      const updatedUser = await response.json()
       setMessage('Profile updated successfully')
 
       // Force a server request to get fresh data
