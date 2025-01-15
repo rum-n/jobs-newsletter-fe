@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useRouter } from 'next/navigation'
 import { theme } from '../theme'
 
 const Form = styled.form`
