@@ -240,7 +240,7 @@ export default function Home() {
           </SocialProof>
 
           <Subtitle>
-            We search on <b>20+ job boards</b> and send you the best opportunities so you don't have to.
+            We search on <b>20+ job boards</b> and send you the best opportunities so you don&apos;t have to.
           </Subtitle>
           <FeaturesGrid>
             <FeatureCard>
