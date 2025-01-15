@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { ChevronDownIcon } from './components/ChevronDownIcon'
 import AuthForm from './components/AuthForm'
-import { theme } from './theme'
 
 const Main = styled.main``
 
