@@ -166,7 +166,7 @@ export default function EditProfileForm({ initialData, onCancel }: EditProfileFo
         onKeyDown={handleKeyDown}
         placeholder="Add keyword and press Enter"
       />
-      <Hint>Hint: Add keywords to get more relevant jobs, e.g. "frontend developer", "fullstack", "Rust"</Hint>
+      <Hint>Hint: Add keywords to get more relevant jobs, e.g. &quot;frontend developer&quot;, &quot;fullstack&quot;, &quot;Rust&quot;</Hint>
 
       <ChipsContainer>
         {selectedPreferences.map(preference => (
