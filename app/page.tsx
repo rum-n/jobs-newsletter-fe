@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { ChevronDownIcon } from './components/ChevronDownIcon'
 import AuthForm from './components/AuthForm'
+import { MacBook } from './components/MacBook'
 
 const Main = styled.main``
 
@@ -159,6 +160,52 @@ const AccordionContent = styled.div<{ isOpen: boolean }>`
   }
 `
 
+const VideoSection = styled.section`
+  padding: 4rem 0;
+  overflow: hidden;
+`
+
+const LaptopContainer = styled.div`
+  position: relative;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0 2rem;
+  }
+`
+
+const LaptopFrame = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+`
+
+const VideoWrapper = styled.div`
+  position: absolute;
+  top: 4.6%;
+  left: 12.6%;
+  width: 75.5%;
+  height: 76%;
+  overflow: hidden;
+  background: #000;
+  
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+`
+
 interface FAQItemData {
   question: string;
   answer: string;
@@ -262,7 +309,20 @@ export default function Home() {
         </Container>
       </HeroSection>
 
-      {/* TODO: Add job preview section */}
+      <VideoSection>
+        <Container>
+          <LaptopContainer>
+            <LaptopFrame>
+              <MacBook />
+              <VideoWrapper>
+                <video autoPlay loop muted playsInline>
+                  <source src="/email-scroll-2.mp4" type="video/mp4" />
+                </video>
+              </VideoWrapper>
+            </LaptopFrame>
+          </LaptopContainer>
+        </Container>
+      </VideoSection>
 
       <FAQSection>
         <Container>
