@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import styled from 'styled-components';
 import LoginForm from '../components/LoginForm';
 import { useSearchParams } from 'next/navigation';
@@ -32,7 +32,7 @@ const Title = styled.h1`
   -webkit-text-fill-color: transparent;
 `
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams()
   const verified = searchParams.get('verified')
   const message = verified ? 'Email verified successfully! You can now login.' : ''
@@ -43,6 +43,14 @@ export default function LoginPage() {
       <Message>{message}</Message>
       <LoginForm />
     </LoginContainer>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginContainer><Title>Loading...</Title></LoginContainer>}>
+      <LoginContent />
+    </Suspense>
   )
 }
 
