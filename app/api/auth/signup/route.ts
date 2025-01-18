@@ -3,19 +3,12 @@ import { prisma } from '@/prisma/prisma'
 import { randomBytes } from 'crypto'
 import sgMail from '@sendgrid/mail'
 import { z } from 'zod'
+import { NextResponse } from 'next/server'
 
 if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 } else {
   console.error('❌ SENDGRID_API_KEY is not configured')
-}
-
-if (!process.env.SENDGRID_FROM_EMAIL) {
-  console.error('❌ SENDGRID_FROM_EMAIL is not configured')
-}
-
-if (!process.env.NEXT_PUBLIC_APP_URL) {
-  console.warn('⚠️ NEXT_PUBLIC_APP_URL is not configured')
 }
 
 const signupSchema = z.object({
@@ -24,38 +17,19 @@ const signupSchema = z.object({
 })
 
 export async function POST(request: Request) {
-  const errorResponse = (message: string, error: any = null, status: number = 500) => {
-    if (error) {
-      console.error('❌ Error:', message, String(error))
-    } else {
-      console.error('❌ Error:', message)
-    }
-
-    return new Response(
-      JSON.stringify({
-        error: message,
-        details: error ? String(error) : undefined
-      }),
-      {
-        status,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-  }
-
   try {
     // 1. Parse request body
     let body
     try {
       body = await request.json()
     } catch (e) {
-      return errorResponse('Invalid request body', e, 400)
+      return NextResponse.json({ error: 'Invalid request body', details: e }, { status: 400 })
     }
 
     // 2. Validate input
     const result = signupSchema.safeParse(body)
     if (!result.success) {
-      return errorResponse('Invalid input', result.error.errors, 400)
+      return NextResponse.json({ error: 'Invalid input', details: result.error.errors }, { status: 400 })
     }
 
     const { email, password } = result.data
@@ -66,7 +40,7 @@ export async function POST(request: Request) {
     })
 
     if (existingUser) {
-      return errorResponse('User already exists', null, 400)
+      return NextResponse.json({ error: 'User already exists' }, { status: 400 })
     }
 
     // 4. Hash password
@@ -91,13 +65,13 @@ export async function POST(request: Request) {
       })
     } catch (dbError) {
       const errorMessage = dbError instanceof Error ? dbError.message : 'Unknown database error'
-      return errorResponse('Failed to create user in database', errorMessage)
+      return NextResponse.json({ error: 'Failed to create user in database', details: errorMessage }, { status: 500 })
     }
 
     // 6. Send verification email
     if (!process.env.SENDGRID_API_KEY) {
       await prisma.user.delete({ where: { id: user.id } })
-      return errorResponse('Email service not configured')
+      return NextResponse.json({ error: 'Email service not configured' }, { status: 500 })
     }
 
     const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${verificationToken}`
@@ -132,11 +106,11 @@ export async function POST(request: Request) {
     } catch (emailError) {
       const errorMessage = emailError instanceof Error ? emailError.message : 'Unknown email error'
       await prisma.user.delete({ where: { id: user.id } })
-      return errorResponse('Failed to send verification email', errorMessage)
+      return NextResponse.json({ error: 'Failed to send verification email', details: errorMessage }, { status: 500 })
     }
 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    return errorResponse('Failed to process request', errorMessage)
+    return NextResponse.json({ error: 'Failed to process request', details: errorMessage }, { status: 500 })
   }
 }
