@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(loginUrl)
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to verify email' },
+      { error: 'Failed to verify email', details: error },
       { status: 500 }
     )
   }

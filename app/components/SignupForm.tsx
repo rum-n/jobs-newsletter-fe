@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import * as z from 'zod'
-import { useRouter } from 'next/navigation'
 import PasswordWrapper from './PasswordWrapper'
 
 const Form = styled.form`
@@ -105,7 +104,6 @@ export default function SignupForm({ onToggleForm }: SignupFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
-  const router = useRouter()
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignupData>({
     resolver: zodResolver(signupSchema)
