@@ -124,17 +124,30 @@ export default function SignupForm({ onToggleForm }: SignupFormProps) {
       })
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Failed to create account')
+        const errorText = await response.text()
+        console.error('Signup error response:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText
+        })
+
+        let errorMessage = 'Failed to create account'
+        try {
+          const errorData = JSON.parse(errorText)
+          errorMessage = errorData.error || errorMessage
+        } catch (e) {
+          console.error('Failed to parse error response:', e)
+        }
+
+        throw new Error(errorMessage)
       }
 
-      setMessage('Account created successfully! Redirecting...')
-      setTimeout(() => {
-        router.push('/profile')
-      }, 2000)
+      const result = await response.json()
+      setMessage(result.message || 'Account created successfully! Please check your email to verify your account.')
     } catch (error) {
       setIsError(true)
       setMessage(error instanceof Error ? error.message : 'Failed to create account')
+      console.error('Signup error:', error)
     } finally {
       setIsLoading(false)
     }

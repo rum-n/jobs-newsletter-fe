@@ -77,7 +77,6 @@ export default function ForgotPasswordForm() {
     setIsError(false)
 
     try {
-      console.log('Submitting request:', data)
       const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -85,11 +84,6 @@ export default function ForgotPasswordForm() {
       })
 
       const responseData = await response.json()
-      console.log('Server response:', {
-        status: response.status,
-        statusText: response.statusText,
-        data: responseData
-      })
 
       if (!response.ok) {
         throw new Error(responseData.message || 'Failed to process request')

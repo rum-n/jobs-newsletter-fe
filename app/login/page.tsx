@@ -3,6 +3,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import LoginForm from '../components/LoginForm';
+import { useSearchParams } from 'next/navigation';
 
 const LoginContainer = styled.div`
   max-width: 1200px;
@@ -15,6 +16,14 @@ const LoginContainer = styled.div`
   }
 `
 
+const Message = styled.p<{ isError?: boolean }>`
+  color: ${props => props.isError ? '#ff0000' : '#00c853'};
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+`
+
+
 const Title = styled.h1`
   font-weight: 800;
   margin-bottom: 2rem;
@@ -24,9 +33,14 @@ const Title = styled.h1`
 `
 
 export default function LoginPage() {
+  const searchParams = useSearchParams()
+  const verified = searchParams.get('verified')
+  const message = verified ? 'Email verified successfully! You can now login.' : ''
+
   return (
     <LoginContainer>
       <Title>Welcome Back</Title>
+      <Message>{message}</Message>
       <LoginForm />
     </LoginContainer>
   )

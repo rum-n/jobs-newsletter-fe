@@ -14,7 +14,6 @@ const loginSchema = z.object({
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    console.log('Received login request:', { email: body.email, hasPassword: !!body.password })
 
     const { email, password } = loginSchema.parse(body)
 
@@ -23,24 +22,26 @@ export async function POST(request: Request) {
         where: { email },
         select: {
           id: true,
-          password: true
+          password: true,
+          isVerified: true
         }
       })
 
       if (!user || !user.id) {
-        console.log('User not found:', email)
         return NextResponse.json({ message: 'Invalid email or password' }, { status: 401 })
       }
 
+      if (!user.isVerified) {
+        return NextResponse.json({ message: 'Please verify your email before logging in' }, { status: 401 })
+      }
+
       const isPasswordValid = await bcrypt.compare(password, user.password)
-      console.log('Password validation result:', { isValid: isPasswordValid })
 
       if (!isPasswordValid) {
         return NextResponse.json({ message: 'Invalid email or password' }, { status: 401 })
       }
 
       if (!process.env.JWT_SECRET) {
-        console.error('JWT_SECRET is not defined')
         return NextResponse.json({ message: 'Server configuration error' }, { status: 500 })
       }
 
@@ -50,8 +51,6 @@ export async function POST(request: Request) {
         email: email,
         iat: Math.floor(Date.now() / 1000)
       }
-
-      console.log('Creating token with payload:', { userId: tokenPayload.userId }) // Log payload
 
       const token = sign(tokenPayload, process.env.JWT_SECRET)
 
@@ -66,19 +65,12 @@ export async function POST(request: Request) {
 
       return NextResponse.json({ success: true })
     } catch (dbError) {
-      console.error('Database operation failed:', dbError)
       return NextResponse.json(
         { message: 'Database error', error: String(dbError) },
         { status: 500 }
       )
     }
   } catch (error) {
-    console.error('Login error:', {
-      error,
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
-
     if (error instanceof z.ZodError) {
       return NextResponse.json({
         message: 'Invalid input',
